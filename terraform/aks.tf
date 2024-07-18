@@ -23,7 +23,7 @@ tags = {
     environment = "PR2"
   }
   depends_on = [
-    azurerm_subnet.main,
+    azurerm_subnet.subnet,
     azurerm_virtual_network.main
   ]
 }
