@@ -7,7 +7,6 @@ IMAGE_TAG=$IMAGE_TAG
 
 # Obtener el login server del ACR
 ACR_LOGIN_SERVER=$(az acr show --name $ACR_NAME --query loginServer --output tsv)
-
 # Iniciar sesión en el ACR
 az acr login --name $ACR_NAME
 
