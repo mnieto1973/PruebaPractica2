@@ -2,7 +2,12 @@
 - name: Configure VM and manage Podman containers
   hosts: vm
   become: yes
+  vars_prompt:
 
+    - name : passwordToken
+       
+
+     
   tasks:
     - name: Update and upgrade APT packages
       apt:
@@ -23,12 +28,17 @@
     - name: Download Podman GPG key
       command: curl -fsSL https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/Release.key -o /tmp/Release.key
 
-   
+    - name: Add Podman GPG key
+      command: gpg --dearmor -o /usr/share/keyrings/libcontainers-archive-keyring.gpg /tmp/Release.key
 
     - name: Add Podman repository
       apt_repository:
         repo: "deb [signed-by=/usr/share/keyrings/libcontainers-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_22.04/ /"
         state: present
+
+    - name: Update apt cache after adding Podman repository
+      apt:
+        update_cache: yes
 
     - name: Install Podman
       apt:
@@ -42,7 +52,7 @@
         state: started
         
     - name: Login
-      command: podman login acrprueba.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhLWUw6S1pSWDpRNU5UOlFKTk86RFRCVzpSM1dXOjNKWVM6NE9EWTpFVFJYOlk3VDI6WkY1WToyQUZNIn0.eyJqdGkiOiIwYmQyNGMxZi1kMGI1LTRjNzgtYTkyYS0wYjg1M2QzNmUwZWEiLCJzdWIiOiJtYXJpYW5vLm5pZXRvNTk5QGNvbXVuaWRhZHVuaXIubmV0IiwibmJmIjoxNzIxMzY3ODAwLCJleHAiOjE3MjEzNzk1MDAsImlhdCI6MTcyMTM2NzgwMCwiaXNzIjoiQXp1cmUgQ29udGFpbmVyIFJlZ2lzdHJ5IiwiYXVkIjoiYWNycHJ1ZWJhLmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiNmZlNDJkOGUxYTVjNDZmNTg3YWQ2ZjdiOWI4NDkwZGQiLCJncmFudF90eXBlIjoicmVmcmVzaF90b2tlbiIsImFwcGlkIjoiMDRiMDc3OTUtOGRkYi00NjFhLWJiZWUtMDJmOWUxYmY3YjQ2IiwidGVuYW50IjoiODk5Nzg5ZGMtMjAyZi00NGI0LTg0NzItYTZkNDBmOWViNDQwIiwicGVybWlzc2lvbnMiOnsiYWN0aW9ucyI6WyJyZWFkIiwid3JpdGUiLCJkZWxldGUiLCJtZXRhZGF0YS9yZWFkIiwibWV0YWRhdGEvd3JpdGUiLCJkZWxldGVkL3JlYWQiLCJkZWxldGVkL3Jlc3RvcmUvYWN0aW9uIl19LCJyb2xlcyI6W119.LSuqhPkfRJmCj5Swwirn5f8-CsL1U81k0clFkHJd4zqmyXaAiwKEkH-ZEdr_sTTooCp2t2OfB96r4ZcUOdrB7ZC20e3Ou1i4BrgfCZyjNdWlkJ_fjpBZHM2AY2nZio0MDKRgc3DaFB6RNKop5vqbrEEsOnX_gMnUz-IlsOnLunExR8Jpcjxg557YBylBGZJQt23VJ2xwelVv2E4w0FWpM_JosQxG6o1Cb5WLeInHchz7z6K-eXJeU2jTsV-RDTwUiq4saEbS2w1izWDvfyIS7TP-mvWJUgQhx3zgI_8l89PQANA09L_u-M-7vWELQC_p5SXhz-v6WKN0NVm8jLIVgg
+      command: podman login acrprueba.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p {{ passwordToken }}
     - name: Pull nginx:stable image from ACR
       command: podman pull acrprueba.azurecr.io/nginx:stable
         

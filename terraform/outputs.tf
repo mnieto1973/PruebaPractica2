@@ -8,6 +8,7 @@ output "vm_public_ip" {
   value       = azurerm_public_ip.publicIP.ip_address
 }
 output "kube_config" {
+  description = "Fichero de configuracion de kubectl"
   value = azurerm_kubernetes_cluster.aks.kube_config_raw
   sensitive = true
 }
