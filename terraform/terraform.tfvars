@@ -1,9 +1,0 @@
-resource_group_name = "GrupoPruebaPractica2"
-location            = "Spain Central"
-admin_username      = "adminuser"
-admin_password      = "ComplexPassword123!"
-acr_name            = "ACRPrueba"
-hostname            = "VmPrueba"
-aks_cluster_name    = "AKSClusterPrueba"
-aks_dns_prefix      = "aksprueba"
-aks_node_count      = 2
