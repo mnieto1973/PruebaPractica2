@@ -2,4 +2,4 @@
 *.tfvars
 *.tfstate
 *.tfstate*
-inventory.ini
+*.inventory.ini
