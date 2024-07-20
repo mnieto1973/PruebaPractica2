@@ -40,7 +40,7 @@ variable "aks_dns_prefix" {
 }
 
 variable "aks_node_count" {
-  description = "Número de nodos en el pool predeterminado de AKS"
+  description = "Número de nodos en el pool predeterminado de AKS."
   type        = number
   default     = 2
 }
