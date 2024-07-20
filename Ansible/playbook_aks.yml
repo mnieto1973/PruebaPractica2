@@ -1,0 +1,84 @@
+- name: Desplegar aplicación en AKS
+  hosts: localhost
+  tasks:
+    - name: Obtener credenciales de AKS
+      shell: |
+        az aks get-credentials --resource-group {{ resource_group_name }} --name {{ aks_cluster_name }}
+      environment:
+        RESOURCE_GROUP_NAME: "{{ resource_group_name }}"
+        AKS_CLUSTER_NAME: "{{ aks_cluster_name }}"
+
+    - name: Crear namespace
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: Namespace
+        name: practica2
+
+    - name: Create a Persistent Volume Claim (PVC)
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: PersistentVolumeClaim
+          metadata:
+            name: pruebaaks-pvc
+            namespace: practica2
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+
+    - name: Desplegar aplicación en AKS
+      kubernetes.core.k8s:
+        state: present
+        definition: 
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: pruebaaks
+            namespace: practica2
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: pruebaaks
+            template:
+              metadata:
+                labels:
+                  app: pruebaaks
+              spec:
+                containers:
+                - name: pruebaaks
+                  image: "{{ acr_name }}/{{ image_aks_name }}:{{ image_aks_tag }}"
+                  ports:
+                  - containerPort: 8080
+                  env:
+                   - name: ASPNETCORE_ENVIRONMENT
+                     value: Production
+                  volumeMounts:
+                  - mountPath: /data
+                    name: data-volume
+                volumes:
+                - name: data-volume
+                  persistentVolumeClaim:
+                    claimName: pruebaaks-pvc
+
+    - name: Expose deployment with LoadBalancer service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: pruebaaks
+            namespace: practica2
+          spec:
+            selector:
+              app: pruebaaks
+            ports:
+            - protocol: TCP
+              port: 8080
+              targetPort: 8080
+            type: LoadBalancer
