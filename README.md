@@ -14,17 +14,11 @@ Este proyecto automatiza el despliegue de aplicaciones utilizando Terraform, Ans
 
 ## Requisitos
 
-- Terraform >= 1.0
-- Ansible >= 2.9
+- Terraform
+- Ansible
 - Azure CLI
 - Podman
 - kubectl
 
-## Instrucciones de Uso
 
-### 1. Clonar el Repositorio
-
-```bash
-git clone [URL del repositorio]
-cd [nombre del repositorio]
 
