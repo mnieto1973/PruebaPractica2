@@ -11,7 +11,7 @@ Este proyecto automatiza el despliegue de aplicaciones utilizando Terraform, Ans
 
 - `terraform/`: Contiene los scripts de Terraform para crear la infraestructura en Azure.
 - `ansible/`: Contiene los playbooks de Ansible para configurar y desplegar aplicaciones.
-
+- `diagrama/`: Contiene el diagrama de los recursos creados con terraform y configurados con Ansible
 ## Requisitos
 
 - Terraform
