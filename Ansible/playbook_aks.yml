@@ -14,7 +14,7 @@
         kind: Namespace
         name: practica2
 
-    - name: Create a Persistent Volume Claim (PVC)
+    - name: Crear volumen para persistencia aplicacion pruebaaks
       kubernetes.core.k8s:
         state: present
         definition:
@@ -65,7 +65,7 @@
                   persistentVolumeClaim:
                     claimName: pruebaaks-pvc
 
-    - name: Expose deployment with LoadBalancer service
+    - name: Exponer aplicacion desplegada con un balanceador
       kubernetes.core.k8s:
         state: present
         definition:
