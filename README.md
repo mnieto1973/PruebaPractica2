@@ -20,5 +20,8 @@ Este proyecto automatiza el despliegue de aplicaciones utilizando Terraform, Ans
 - Podman
 - kubectl
 
+## Repositorio Aplicacion para prueba AKS Persistente
+
+https://github.com/mnieto1973/PruebaAKS
 
 
